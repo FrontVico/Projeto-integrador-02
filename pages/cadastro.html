@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Gourmet Express</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <link rel="stylesheet" href="css/cadastro.css">
+    <style>
+        /* Variáveis e reset - Mesmo estilo do site principal */
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffd166;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #8d99ae;
+            --light-gray: #edf2f4;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .register-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .register-left {
+            flex: 1;
+            background: linear-gradient(rgba(43, 45, 66, 0.8), rgba(43, 45, 66, 0.8)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .register-left-content {
+            max-width: 400px;
+        }
+        
+        .register-left h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .register-left p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .register-features {
+            margin-top: 30px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .register-right {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .register-form {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .form-title p {
+            color: var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .password-strength {
+            height: 5px;
+            background: var(--light-gray);
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: var(--transition);
+        }
+        
+        .password-strength-weak {
+            background: #ff4d4d;
+            width: 33%;
+        }
+        
+        .password-strength-medium {
+            background: #ffa64d;
+            width: 66%;
+        }
+        
+        .password-strength-strong {
+            background: #2ecc71;
+            width: 100%;
+        }
+        
+        .password-strength-text {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            text-align: right;
+            color: var(--gray);
+        }
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .terms input {
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+        
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .register-btn:hover {
+            background: linear-gradient(135deg, #ff5252, #ff7b7b);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .register-btn:disabled {
+            background: var(--light-gray);
+            color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: var(--light-gray);
+        }
+        
+        .divider-text {
+            padding: 0 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .alert-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .register-container {
+                flex-direction: column;
+                max-width: 100%;
+            }
+            
+            .register-left {
+                display: none;
+            }
+            
+            .register-right {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-left">
+            <div class="register-left-content">
+                <h1>Junte-se a nós!</h1>
+                <p>Crie sua conta e descubra um mundo de sabores exclusivos com entrega rápida.</p>
+                
+                <div class="register-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div>
+                            <h3>Ofertas Exclusivas</h3>
+                            <p>Descontos especiais para membros</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div>
+                            <h3>Histórico de Pedidos</h3>
+                            <p>Acesse seus pedidos anteriores facilmente</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div>
+                            <h3>Entrega Rápida</h3>
+                            <p>Seus pedidos chegam em tempo recorde</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div>
+                            <h3>Programa de Fidelidade</h3>
+                            <p>Ganhe pontos em cada pedido</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="register-right">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                Gourmet Express
+            </div>
+            
+            <div class="register-form fade-in">
+                <div class="form-title">
+                    <h2>Criar Conta</h2>
+                    <p>Preencha seus dados para se cadastrar</p>
+                </div>
+                
+                <div id="alertBox" class="alert"></div>
+                
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nome</label>
+                            <div class="input-with-icon">
+                                <div class="input-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Sobrenome</label>
+                            <div class="input-with-icon">
+                                <div class="input-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username">Nome de usuário</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-at"></i>
+                            </div>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="password-strength">
+                            <div id="passwordStrengthBar" class="password-strength-bar"></div>
+                        </div>
+                        <div id="passwordStrengthText" class="password-strength-text"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar Senha</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                    </div>
+                    
+                    <div class="terms">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">Concordo com os <a href="#">Termos de Uso</a> e <a href="#">Política de Privacidade</a></label>
+                    </div>
+                    
+                    <button type="submit" class="register-btn" id="registerButton">
+                        <i class="fas fa-user-plus"></i> Criar Conta
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">Já tem uma conta?</div>
+                    <div class="divider-line"></div>
+                </div>
+                
+                <div class="login-link">
+                    <a href="../index.html">Fazer login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar o Parse com as credenciais do Back4App
+        Parse.initialize("xqGomcL3viTIVw89M7NCoyPLNNt1xBrRQpCZ90Sy", "1efT2vsR6vfWx7XZd3VjLgo8fIVKKZ1YcfbhQa1m");
+        Parse.serverURL = 'https://parseapi.back4app.com/';
+        
+        // Elementos DOM
+        const registerForm = document.getElementById('registerForm');
+        const alertBox = document.getElementById('alertBox');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+        const passwordStrengthText = document.getElementById('passwordStrengthText');
+        const registerButton = document.getElementById('registerButton');
+        
+        // Função para mostrar alertas
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            // Esconder o alerta após 5 segundos
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Função para verificar força da senha
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            
+            // Se a senha estiver vazia
+            if (password.length === 0) {
+                return { strength: 0, text: "" };
+            }
+            
+            // Verificar comprimento
+            if (password.length > 5) strength += 1;
+            if (password.length > 7) strength += 1;
+            
+            // Verificar se tem letras minúsculas e maiúsculas
+            if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) strength += 1;
+            
+            // Verificar se tem números
+            if (password.match(/([0-9])/)) strength += 1;
+            
+            // Verificar se tem caracteres especiais
+            if (password.match(/([!,@,#,$,%,^,&,*,?,_,~])/)) strength += 1;
+            
+            // Determinar texto e classe baseado na força
+            let text = "";
+            if (strength < 2) {
+                text = "Fraca";
+            } else if (strength < 4) {
+                text = "Média";
+            } else {
+                text = "Forte";
+            }
+            
+            return { strength: strength, text: text };
+        }
+        
+        // Event listener para verificar força da senha em tempo real
+        passwordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const result = checkPasswordStrength(password);
+            
+            // Atualizar barra de força
+            passwordStrengthBar.className = 'password-strength-bar';
+            if (result.strength > 0) {
+                if (result.strength < 2) {
+                    passwordStrengthBar.classList.add('password-strength-weak');
+                } else if (result.strength < 4) {
+                    passwordStrengthBar.classList.add('password-strength-medium');
+                } else {
+                    passwordStrengthBar.classList.add('password-strength-strong');
+                }
+            }
+            
+            // Atualizar texto
+            passwordStrengthText.textContent = result.text;
+        });
+        
+        // Event listener para verificar se as senhas coincidem
+        confirmPasswordInput.addEventListener('input', function() {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                confirmPasswordInput.style.borderColor = '#ff4d4d';
+            } else {
+                confirmPasswordInput.style.borderColor = '';
+            }
+        });
+        
+        // Event Listener para o formulário de cadastro
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Obter valores dos campos
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Validações
+            if (!terms) {
+                showAlert('Você deve aceitar os Termos de Uso e Política de Privacidade.', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('As senhas não coincidem.', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAlert('A senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+            
+            // Botão de loading
+            const originalText = registerButton.innerHTML;
+            registerButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Criando conta...';
+            registerButton.disabled = true;
+            
+            try {
+                // Criar usuário no Back4App
+                const user = new Parse.User();
+                user.set('username', username);
+                user.set('password', password);
+                user.set('email', email);
+                user.set('firstName', firstName);
+                user.set('lastName', lastName);
+                user.set('phone', phone);
+                
+                // Tentar cadastrar o usuário
+                const newUser = await user.signUp();
+                
+                // Cadastro bem-sucedido
+                showAlert('Conta criada com sucesso! Redirecionando para login...', 'success');
+                
+                // Redirecionar após cadastro bem-sucedido
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                
+            } catch (error) {
+                // Tratar erros de cadastro
+                console.error('Erro no cadastro:', error);
+                
+                let errorMessage = 'Erro ao criar conta. ';
+                
+                switch (error.code) {
+                    case 202: // Username already taken
+                        errorMessage += 'Nome de usuário já está em uso.';
+                        break;
+                    case 203: // Email already taken
+                        errorMessage += 'E-mail já está cadastrado.';
+                        break;
+                    case 125: // Invalid email address
+                        errorMessage += 'Endereço de e-mail inválido.';
+                        break;
+                    case 200: // Username is missing
+                        errorMessage += 'Nome de usuário é obrigatório.';
+                        break;
+                    case 201: // Password is missing
+                        errorMessage += 'Senha é obrigatória.';
+                        break;
+                    default:
+                        errorMessage += 'Tente novamente mais tarde.';
+                }
+                
+                showAlert(errorMessage, 'error');
+                
+                // Restaurar botão
+                registerButton.innerHTML = originalText;
+                registerButton.disabled = false;
+            }
+        });
+        
+        // Formatação do telefone
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            
+            if (value.length > 0) {
+                value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                if (value.length > 10) {
+                    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                } else {
+                    value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                }
+            }
+            
+            e.target.value = value;
+        });
+        
+        // Verificar se usuário já está logado
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = Parse.User.current();
+            if (currentUser) {
+                showAlert('Você já está logado. Redirecionando...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

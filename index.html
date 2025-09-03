@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Vida com tempero!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="login-left-content">
+                <h1>Bem-vindo de volta!</h1>
+                <p>Faça login para acessar sua conta e continuar aproveitando os melhores sabores.</p>
+                
+                <div class="login-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div>
+                            <h3>Entrega Rápida</h3>
+                            <p>Seus pedidos chegam mais rápido</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div>
+                            <h3>Favoritos Salvos</h3>
+                            <p>Acesse seus pratos preferidos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div>
+                            <h3>Histórico de Pedidos</h3>
+                            <p>Revise e repita pedidos anteriores</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="login-right">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                Vida com tempero!
+            </div>
+            
+            <div class="login-form fade-in">
+                <div class="form-title">
+                    <h2>Fazer Login</h2>
+                    <p>Entre com suas credenciais para continuar</p>
+                </div>
+                
+                <div id="alertBox" class="alert"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">E-mail ou nome de usuário</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="input-with-icon">
+                            <div class="input-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="remember">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Lembrar-me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Esqueci minha senha</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+                </form>
+                
+                <div class="register-link">
+                    Não tem uma conta? <a href="#" id="registerLink">Cadastre-se agora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar o Parse com as credenciais do Back4App
+        Parse.initialize("xqGomcL3viTIVw89M7NCoyPLNNt1xBrRQpCZ90Sy", "1efT2vsR6vfWx7XZd3VjLgo8fIVKKZ1YcfbhQa1m");
+        Parse.serverURL = 'https://parseapi.back4app.com/';
+        
+        // Elementos DOM
+        const loginForm = document.getElementById('loginForm');
+        const alertBox = document.getElementById('alertBox');
+        const registerLink = document.getElementById('registerLink');
+        
+        // Função para mostrar alertas
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            // Esconder o alerta após 5 segundos
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 10000);
+        }
+        
+        // Event Listener para o formulário de login
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // Validação básica
+            if (!username || !password) {
+                showAlert('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+            
+            // Botão de loading
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Fazer login usando Parse
+                const user = await Parse.User.logIn(username, password);
+                
+                // Login bem-sucedido
+                showAlert('Login realizado com sucesso! Redirecionando...', 'success');
+                
+                // Redirecionar após login bem-sucedido
+                setTimeout(() => {
+                    window.location.href = 'pages/home.html';
+                }, 1500);
+                
+            } catch (error) {
+                // Tratar erros de login
+                console.error('Erro no login:', error);
+                
+                let errorMessage = 'Erro ao fazer login. ';
+                
+                switch (error.code) {
+                    case 101: // Invalid login credentials
+                        errorMessage += 'Credenciais inválidas. Verifique seu e-mail e senha.';
+                        break;
+                    case 200: // Username is missing
+                        errorMessage += 'E-mail é obrigatório.';
+                        break;
+                    case 201: // Password is missing
+                        errorMessage += 'Senha é obrigatória.';
+                        break;
+                    case 205: // Account not verified
+                        errorMessage += 'Conta não verificada. Verifique seu e-mail.';
+                        break;
+                    default:
+                        errorMessage += 'Tente novamente mais tarde.';
+                }
+                
+                showAlert(errorMessage, 'error');
+                
+                // Restaurar botão
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Event Listener para o link de cadastro
+        registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Redirecionar para página de cadastro (a ser implementada)
+            alert('Redirecionando para página de cadastro...');
+            // window.location.href = 'cadastro.html';
+        });
+        
+        // Verificar se há usuário lembrado
+        window.addEventListener('DOMContentLoaded', function() {
+            const rememberedUser = localStorage.getItem('rememberedUser');
+            if (rememberedUser) {
+                const user = JSON.parse(rememberedUser);
+                document.getElementById('username').value = user.username;
+                document.getElementById('remember').checked = true;
+            }
+            
+            // Verificar se usuário já está logado
+            const currentUser = Parse.User.current();
+            if (currentUser) {
+                showAlert('Você já está logado. Redirecionando...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'pages/home.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

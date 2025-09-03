@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Gourmet Express</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/cardapio.css">
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-utensils"></i>
+                    Vida com tempero!
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="home.html">Início</a></li>
+                        <li><a href="cardapio.html" class="active">Cardápio</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="cart-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="menu-hero">
+        <div class="container">
+            <div class="menu-hero-content fade-in">
+                <h1>Nosso Cardápio</h1>
+                <p>Descubra uma experiência gastronômica única com pratos preparados com ingredientes frescos e selecionados</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtros e Busca -->
+    <section class="menu-filters">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Buscar no cardápio...">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                
+                <div class="categories">
+                    <button class="category-btn active" data-category="all">Tudo</button>
+                    <button class="category-btn" data-category="main">Pratos Principais</button>
+                    <button class="category-btn" data-category="appetizer">Entradas</button>
+                    <button class="category-btn" data-category="salad">Saladas</button>
+                    <button class="category-btn" data-category="dessert">Sobremesas</button>
+                    <button class="category-btn" data-category="drink">Bebidas</button>
+                </div>
+                
+                <select class="filter-select" id="sort-select">
+                    <option value="popular">Ordenar por: Mais populares</option>
+                    <option value="price-asc">Ordenar por: Preço (menor para maior)</option>
+                    <option value="price-desc">Ordenar por: Preço (maior para menor)</option>
+                    <option value="name">Ordenar por: Nome (A-Z)</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Pratos Principais</h2>
+                <p>Selecione seus pratos favoritos e adicione ao carrinho</p>
+            </div>
+            
+            <div class="menu-grid" id="menu-grid">
+                <!-- Itens do cardápio serão carregados dinamicamente via JavaScript -->
+            </div>
+            
+            <div class="section-title fade-in">
+                <h2>Entradas & Aperitivos</h2>
+                <p>Para começar sua refeição com sabores incríveis</p>
+            </div>
+            
+            <div class="menu-grid" id="appetizers-grid">
+                <!-- Itens de entrada serão carregados dinamicamente via JavaScript -->
+            </div>
+            
+            <div class="section-title fade-in">
+                <h2>Sobremesas</h2>
+                <p>Finalize sua experiência com nossas delícias doces</p>
+            </div>
+            
+            <div class="menu-grid" id="desserts-grid">
+                <!-- Itens de sobremesa serão carregados dinamicamente via JavaScript -->
+            </div>
+            
+            <div class="section-title fade-in">
+                <h2>Bebidas</h2>
+                <p>Refresque-se com nossas opções de drinks e bebidas</p>
+            </div>
+            
+            <div class="menu-grid" id="drinks-grid">
+                <!-- Itens de bebidas serão carregados dinamicamente via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Seu Carrinho</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <!-- Itens do carrinho serão adicionados dinamicamente -->
+            </div>
+            
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">R$ 0,00</span>
+            </div>
+            
+            <button class="checkout-btn" id="proceed-to-checkout">
+                <i class="fas fa-credit-card"></i> Fazer Pedido
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Vida com tempero!</h3>
+                    <p>Levando sabores exclusivos e experiências gastronômicas para sua casa, com a qualidade e sofisticação que você merece.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horário de Funcionamento</h3>
+                    <p>Segunda a Sexta: 11h às 23h</p>
+                    <p>Sábado e Domingo: 11h às 00h</p>
+                    <p>Feriados: 11h às 22h</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
+                    <p><i class="fas fa-envelope"></i> contatovidacomtempero@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Gourmet, 123 - São Paulo, SP</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2015 Vida com tempero! - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dados do cardápio (serão substituídos pelo backend)
+        const menuItems = [
+            // Pratos Principais
+            {
+                id: 1,
+                name: "Risoto de Cogumelos",
+                description: "Risoto cremoso com cogumelos shitake, shimeji e parmesão",
+                price: 42.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["vegetariano"],
+                popular: true
+            },
+            {
+                id: 2,
+                name: "Hambúrguer Gourmet",
+                description: "Blend de carne Angus, queijo cheddar, bacon e molho especial",
+                price: 32.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["destaque"],
+                popular: true
+            },
+            {
+                id: 3,
+                name: "Filé Mignon com Purê",
+                description: "Filé mignon suculento com purê de batata e legumes grelhados",
+                price: 56.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: [],
+                popular: false
+            },
+            {
+                id: 4,
+                name: "Penne ao Molho Pesto",
+                description: "Massa penne com molho pesto tradicional, tomates secos e pinoli",
+                price: 38.50,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["vegetariano"],
+                popular: false
+            },
+            {
+                id: 5,
+                name: "Frango Grelhado com Ervas",
+                description: "Peito de frango grelhado com ervas finas e arroz de açafrão",
+                price: 35.90,
+                category: "main",
+                image: "https://www.iguaria.com/wp-content/uploads/2019/01/Iguaria-Peito-de-Frango-Grelhado-com-Limao.jpg",
+                tags: [],
+                popular: true
+            },
+            {
+                id: 6,
+                name: "Salmão ao Molho de Maracujá",
+                description: "Salmão grelhado com molho de maracujá e acompanhamento de legumes",
+                price: 49.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["saudável"],
+                popular: false
+            },
+            
+            // Entradas
+            {
+                id: 7,
+                name: "Bruschetta Italiana",
+                description: "Pão italiano torrado com tomate, manjericão e azeite extra virgem",
+                price: 18.90,
+                category: "appetizer",
+                image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["vegetariano"],
+                popular: true
+            },
+            {
+                id: 8,
+                name: "Bolinhos de Bacalhau",
+                description: "Porção com 8 bolinhos de bacalhau crocantes com molho tártaro",
+                price: 26.90,
+                category: "appetizer",
+                image: "https://truffle-assets.tastemadecontent.net/84cnzp0itw1q_1xJDeVySmo4ug04kGKM2Cq_bolinho-de-bacalhau_landscapeThumbnail_pt.jpeg",
+                tags: [],
+                popular: false
+            },
+            {
+                id: 9,
+                name: "Carpaccio de Carne",
+                description: "Finas fatias de carne crua com rúcula, parmesão e molho de mostarda",
+                price: 32.90,
+                category: "appetizer",
+                image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: [],
+                popular: true
+            },
+            
+            // Sobremesas
+            {
+                id: 10,
+                name: "Tiramisu",
+                description: "Clássica sobremesa italiana com café e mascarpone",
+                price: 22.90,
+                category: "dessert",
+                image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: [],
+                popular: true
+            },
+            {
+                id: 11,
+                name: "Brownie com Sorvete",
+                description: "Brownie de chocolate com sorvete de creme e calda",
+                price: 24.90,
+                category: "dessert",
+                image: "https://media-cdn.tripadvisor.com/media/photo-s/11/14/8e/ea/brownie-com-sorvete-de.jpg",
+                tags: [],
+                popular: false
+            },
+            {
+                id: 12,
+                name: "Cheesecake de Frutas Vermelhas",
+                description: "Cheesecake cremoso com calda de frutas vermelhas",
+                price: 26.90,
+                category: "dessert",
+                image: "https://images.unsplash.com/photo-1524351199678-941a58a3df50?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: [],
+                popular: true
+            },
+            
+            // Bebidas
+            {
+                id: 13,
+                name: "Vinho Tinto Seco",
+                description: "Taça de vinho tinto seco da casa, harmonização perfeita",
+                price: 16.90,
+                category: "drink",
+                image: "https://images.tcdn.com.br/img/img_prod/1303599/vinho_fino_tinto_seco_cabernet_sauvignon_rarita_750_ml_119_2_d6be26b634516768d557e7b978ecb0c4.jpg",
+                tags: ["alcoólico"],
+                popular: false
+            },
+            {
+                id: 14,
+                name: "Smoothie Tropical",
+                description: "Manga, maracujá e laranja com iogurte natural",
+                price: 14.90,
+                category: "drink",
+                image: "https://www.jessicagavin.com/wp-content/uploads/2020/06/tropical-smoothie-5-1200.jpg",
+                tags: ["sem álcool"],
+                popular: true
+            },
+            {
+                id: 15,
+                name: "Cerveja Artesanal",
+                description: "Long neck de cerveja artesanal da casa - 500ml",
+                price: 18.90,
+                category: "drink",
+                image: "https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                tags: ["alcoólico"],
+                popular: false
+            }
+        ];
+
+        // Elementos DOM
+        const cartIcon = document.getElementById('cart-icon');
+        const cartModal = document.getElementById('cart-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.querySelector('.cart-count');
+        const menuGrid = document.getElementById('menu-grid');
+        const appetizersGrid = document.getElementById('appetizers-grid');
+        const dessertsGrid = document.getElementById('desserts-grid');
+        const drinksGrid = document.getElementById('drinks-grid');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const searchInput = document.getElementById('search-input');
+        const sortSelect = document.getElementById('sort-select');
+        const proceedToCheckout = document.getElementById('proceed-to-checkout');
+
+        // Carrinho
+        let cart = [];
+
+        // Inicialização
+        function init() {
+            renderMenuItems();
+            setupEventListeners();
+            loadCartFromStorage();
+            updateCartUI();
+        }
+
+        // Renderizar itens do menu
+        function renderMenuItems(category = 'all', searchTerm = '') {
+            // Limpar as grids
+            menuGrid.innerHTML = '';
+            appetizersGrid.innerHTML = '';
+            dessertsGrid.innerHTML = '';
+            drinksGrid.innerHTML = '';
+            
+            // Filtrar itens
+            let filteredItems = menuItems;
+            
+            if (category !== 'all') {
+                filteredItems = filteredItems.filter(item => item.category === category);
+            }
+            
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredItems = filteredItems.filter(item => 
+                    item.name.toLowerCase().includes(term) || 
+                    item.description.toLowerCase().includes(term) ||
+                    item.tags.some(tag => tag.toLowerCase().includes(term))
+                );
+            }
+            
+            // Ordenar itens
+            const sortBy = sortSelect.value;
+            switch(sortBy) {
+                case 'price-asc':
+                    filteredItems.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    filteredItems.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    filteredItems.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'popular':
+                default:
+                    filteredItems.sort((a, b) => b.popular - a.popular);
+                    break;
+            }
+            
+            // Agrupar itens por categoria
+            const mains = filteredItems.filter(item => item.category === 'main');
+            const appetizers = filteredItems.filter(item => item.category === 'appetizer');
+            const desserts = filteredItems.filter(item => item.category === 'dessert');
+            const drinks = filteredItems.filter(item => item.category === 'drink');
+            
+            // Renderizar cada categoria
+            renderItemsToGrid(mains, menuGrid);
+            renderItemsToGrid(appetizers, appetizersGrid);
+            renderItemsToGrid(desserts, dessertsGrid);
+            renderItemsToGrid(drinks, drinksGrid);
+            
+            // Ocultar seções vazias
+            document.querySelectorAll('.section-title').forEach((title, index) => {
+                const sectionGrid = [menuGrid, appetizersGrid, dessertsGrid, drinksGrid][index];
+                if (sectionGrid.children.length === 0) {
+                    title.style.display = 'none';
+                } else {
+                    title.style.display = 'block';
+                }
+            });
+        }
+
+        // Renderizar itens em uma grid específica
+        function renderItemsToGrid(items, gridElement) {
+            items.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.classList.add('menu-item', 'fade-in');
+                menuItemElement.innerHTML = `
+                    ${item.popular ? `<div class="menu-item-badge">Destaque</div>` : ''}
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-img">
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <span>${item.name}</span>
+                            <span>R$ ${item.price.toFixed(2)}</span>
+                        </div>
+                        <p class="menu-item-desc">${item.description}</p>
+                        ${item.tags.length > 0 ? `
+                            <div class="item-tags">
+                                ${item.tags.map(tag => {
+                                    let tagClass = 'item-tag';
+                                    if (tag === 'vegetariano') tagClass += ' tag-veg';
+                                    if (tag === 'vegan') tagClass += ' tag-vegan';
+                                    if (tag === 'sem glúten') tagClass += ' tag-glutenfree';
+                                    if (tag === 'picante') tagClass += ' tag-spicy';
+                                    return `<span class="${tagClass}">${tag}</span>`;
+                                }).join('')}
+                            </div>
+                        ` : ''}
+                        <button class="add-to-cart" data-id="${item.id}">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                `;
+                gridElement.appendChild(menuItemElement);
+            });
+            
+            // Adicionar event listeners aos botões de adicionar ao carrinho
+            gridElement.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.closest('.add-to-cart').getAttribute('data-id'));
+                    addToCart(itemId);
+                });
+            });
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Botões de categoria
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const category = button.getAttribute('data-category');
+                    renderMenuItems(category, searchInput.value);
+                });
+            });
+            
+            // Campo de busca
+            searchInput.addEventListener('input', () => {
+                const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+                renderMenuItems(activeCategory, searchInput.value);
+            });
+            
+            // Ordenação
+            sortSelect.addEventListener('change', () => {
+                const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+                renderMenuItems(activeCategory, searchInput.value);
+            });
+            
+            // Modal do carrinho
+            cartIcon.addEventListener('click', () => {
+                cartModal.style.display = 'flex';
+            });
+            
+            closeModal.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+            
+            // Fechar modal ao clicar fora
+            window.addEventListener('click', (e) => {
+                if (e.target === cartModal) {
+                    cartModal.style.display = 'none';
+                }
+            });
+            
+            // Finalizar pedido
+            proceedToCheckout.addEventListener('click', () => {
+                window.location.href = 'checkout.html';
+            });
+        }
+
+        // Adicionar item ao carrinho
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            const existingItem = cart.find(i => i.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI();
+            saveCartToStorage();
+            
+            // Feedback visual
+            const button = document.querySelector(`.add-to-cart[data-id="${itemId}"]`);
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Adicionado';
+            button.style.background = 'linear-gradient(135deg, var(--secondary), #70d6ce)';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+
+        // Atualizar UI do carrinho
+        function updateCartUI() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            let count = 0;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray);">Seu carrinho está vazio</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    count += item.quantity;
+                    
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.classList.add('cart-item');
+                    cartItemElement.innerHTML = `
+                        <div>
+                            <h4 class="cart-item-title">${item.name}</h4>
+                            <p class="cart-item-price">R$ ${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItemElement);
+                });
+            }
+            
+            cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+            cartCount.textContent = count;
+            
+            // Adicionar event listeners aos botões de quantidade
+            document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    increaseQuantity(itemId);
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    decreaseQuantity(itemId);
+                });
+            });
+        }
+
+        // Aumentar quantidade do item
+        function increaseQuantity(itemId) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity += 1;
+                updateCartUI();
+                saveCartToStorage();
+            }
+        }
+
+        // Diminuir quantidade do item
+        function decreaseQuantity(itemId) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity -= 1;
+                if (item.quantity === 0) {
+                    cart = cart.filter(i => i.id !== itemId);
+                }
+                updateCartUI();
+                saveCartToStorage();
+            }
+        }
+
+        // Salvar carrinho no localStorage
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Carregar carrinho do localStorage
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        }
+
+        // Inicializar a aplicação
+        init();
+    </script>
+</body>
+</html>

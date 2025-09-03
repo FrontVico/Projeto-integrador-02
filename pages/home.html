@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vida com tempero! - Delivery Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- JS -->
+    <script src="script.js"></script>
+    <!-- JS -->
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    Vida com tempero!
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="cardapio.html">Cardápio</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <div class="cart-icon" id="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Experiência gastronômica em sua casa</h1>
+                <p>Pratos exclusivos preparados por chefs renomados, entregues na sua porta com todo cuidado e sabor</p>
+                <div>
+                    <a href="#menu" class="btn">Fazer Pedido</a>
+                    <a href="#about" class="btn btn-secondary">Conhecer Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Nosso Cardápio</h2>
+                <p>Delicie-se com nossas especialidades preparadas com ingredientes frescos e selecionados</p>
+            </div>
+            
+            <div class="categories fade-in delay-1">
+                <button class="category-btn active" data-category="all">Tudo</button>
+                <button class="category-btn" data-category="main">Pratos Principais</button>
+                <button class="category-btn" data-category="appetizer">Entradas</button>
+                <button class="category-btn" data-category="dessert">Sobremesas</button>
+                <button class="category-btn" data-category="drink">Bebidas</button>
+            </div>
+            
+            <div class="menu-grid" id="menu-grid">
+                <!-- Itens do cardápio serão carregados dinamicamente via JavaScript/Backend -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Seu Carrinho</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <!-- Itens do carrinho serão adicionados dinamicamente -->
+            </div>
+            
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">R$ 0,00</span>
+            </div>
+            
+            <button class="checkout-btn" id="proceed-to-checkout">
+                <i class="fas fa-credit-card"></i> Fazer Pedido
+            </button>
+            
+            <!-- Formulário de Checkout (inicialmente oculto) -->
+            <form id="checkout-form">
+                <h3 class="form-title"><i class="fas fa-truck"></i> Informações de Entrega</h3>
+                
+                <div class="form-group">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Endereço</label>
+                    <input type="text" id="address" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">Cidade</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="neighborhood">Bairro</label>
+                        <input type="text" id="neighborhood" required>
+                    </div>
+                </div>
+                
+                <h3 class="form-title"><i class="fas fa-credit-card"></i> Forma de Pagamento</h3>
+                
+                <div class="form-group">
+                    <label for="payment-method">Método de Pagamento</label>
+                    <select id="payment-method" required>
+                        <option value="">Selecione...</option>
+                        <option value="credit">Cartão de Crédito</option>
+                        <option value="debit">Cartão de Débito</option>
+                        <option value="pix">PIX</option>
+                        <option value="cash">Dinheiro</option>
+                    </select>
+                </div>
+                
+                <div id="credit-card-fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="card-number">Número do Cartão</label>
+                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-expiry">Validade</label>
+                            <input type="text" id="card-expiry" placeholder="MM/AA">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="card-cvv">CVV</label>
+                            <input type="text" id="card-cvv" placeholder="000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="card-name">Nome no Cartão</label>
+                        <input type="text" id="card-name">
+                    </div>
+                </div>
+                
+                <button type="submit" class="checkout-btn">
+                    <i class="fas fa-check-circle"></i> Finalizar Pedido
+                </button>
+            </form>
+            
+            <!-- Acompanhamento de Pedido (inicialmente oculto) -->
+            <div class="order-tracking" id="order-tracking">
+                <h3><i class="fas fa-map-marker-alt"></i> Acompanhamento do Pedido</h3>
+                <p class="order-status">Status: <span id="order-status">Preparando</span></p>
+                
+                <div class="progress-bar">
+                    <div class="progress-step completed">
+                        1
+                        <span class="step-label">Recebido</span>
+                    </div>
+                    <div class="progress-step active">
+                        2
+                        <span class="step-label">Preparando</span>
+                    </div>
+                    <div class="progress-step">
+                        3
+                        <span class="step-label">Saiu para entrega</span>
+                    </div>
+                    <div class="progress-step">
+                        4
+                        <span class="step-label">Entregue</span>
+                    </div>
+                </div>
+                
+                <p class="estimated-time">Tempo estimado: <span id="estimated-time">30-40 minutos</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Vida com tempero!</h3>
+                    <p>Levando sabores exclusivos e experiências gastronômicas para sua casa, com a qualidade e sofisticação que você merece.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horário de Funcionamento</h3>
+                    <p>Segunda a Sexta: 11h às 23h</p>
+                    <p>Sábado e Domingo: 11h às 00h</p>
+                    <p>Feriados: 11h às 22h</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
+                    <p><i class="fas fa-envelope"></i> contatovidacomtempero@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Gourmet, 123 - São Paulo, SP</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2015 Vida com tempero! - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dados de exemplo (serão substituídos pelo backend)
+        const menuItems = [
+            {
+                id: 1,
+                name: "Risoto de Cogumelos",
+                description: "Risoto cremoso com cogumelos shitake, shimeji e parmesão",
+                price: 42.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                badge: "Mais pedido"
+            },
+            {
+                id: 2,
+                name: "Hambúrguer Gourmet",
+                description: "Blend de carne Angus, queijo cheddar, bacon e molho especial",
+                price: 32.90,
+                category: "main",
+                image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 3,
+                name: "Bruschetta Italiana",
+                description: "Pão italiano torrado com tomate, manjericão e azeite extra virgem",
+                price: 18.90,
+                category: "appetizer",
+                image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                id: 4,
+                name: "Tiramisu",
+                description: "Clássica sobremesa italiana com café e mascarpone",
+                price: 22.90,
+                category: "dessert",
+                image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+                badge: "Novidade"
+            },
+            {
+                id: 5,
+                name: "Vinho Tinto Seco",
+                description: "Taça de vinho tinto seco da casa, harmonização perfeita",
+                price: 16.90,
+                category: "drink",
+                image: "https://images.tcdn.com.br/img/img_prod/1303599/vinho_fino_tinto_seco_cabernet_sauvignon_rarita_750_ml_119_2_d6be26b634516768d557e7b978ecb0c4.jpg"
+            },
+            {
+                id: 6,
+                name: "Smoothie Tropical",
+                description: "Manga, maracujá e laranja com iogurte natural",
+                price: 14.90,
+                category: "drink",
+                image: "https://www.jessicagavin.com/wp-content/uploads/2020/06/tropical-smoothie-5-1200.jpg"
+            }
+        ];
+
+        // Elementos DOM
+        const cartIcon = document.getElementById('cart-icon');
+        const cartModal = document.getElementById('cart-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+        const cartCount = document.querySelector('.cart-count');
+        const menuGrid = document.getElementById('menu-grid');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const checkoutForm = document.getElementById('checkout-form');
+        const proceedToCheckout = document.getElementById('proceed-to-checkout');
+        const orderTracking = document.getElementById('order-tracking');
+        const paymentMethod = document.getElementById('payment-method');
+        const creditCardFields = document.getElementById('credit-card-fields');
+
+        // Carrinho
+        let cart = [];
+
+        // Inicialização
+        function init() {
+            renderMenuItems();
+            setupEventListeners();
+            loadCartFromStorage();
+            updateCartUI();
+        }
+
+        // Renderizar itens do menu
+        function renderMenuItems(category = 'all') {
+            menuGrid.innerHTML = '';
+            
+            const filteredItems = category === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === category);
+            
+            filteredItems.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.classList.add('menu-item', 'fade-in');
+                menuItemElement.innerHTML = `
+                    ${item.badge ? `<div class="menu-item-badge">${item.badge}</div>` : ''}
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-img">
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <span>${item.name}</span>
+                            <span>R$ ${item.price.toFixed(2)}</span>
+                        </div>
+                        <p class="menu-item-desc">${item.description}</p>
+                        <button class="add-to-cart" data-id="${item.id}">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                `;
+                menuGrid.appendChild(menuItemElement);
+            });
+            
+            // Adicionar event listeners aos botões de adicionar ao carrinho
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.closest('.add-to-cart').getAttribute('data-id'));
+                    addToCart(itemId);
+                });
+            });
+        }
+
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Botões de categoria
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const category = button.getAttribute('data-category');
+                    renderMenuItems(category);
+                });
+            });
+            
+            // Modal do carrinho
+            cartIcon.addEventListener('click', () => {
+                cartModal.style.display = 'flex';
+            });
+            
+            closeModal.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+            
+            // Fechar modal ao clicar fora
+            window.addEventListener('click', (e) => {
+                if (e.target === cartModal) {
+                    cartModal.style.display = 'none';
+                }
+            });
+            
+            // Finalizar pedido
+            proceedToCheckout.addEventListener('click', () => {
+                document.querySelector('.cart-items').style.display = 'none';
+                document.querySelector('.cart-total').style.display = 'none';
+                proceedToCheckout.style.display = 'none';
+                checkoutForm.style.display = 'block';
+            });
+            
+            // Formulário de checkout
+            checkoutForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                processOrder();
+            });
+            
+            // Mostrar/ocultar campos de cartão de crédito
+            paymentMethod.addEventListener('change', () => {
+                if (paymentMethod.value === 'credit' || paymentMethod.value === 'debit') {
+                    creditCardFields.style.display = 'block';
+                } else {
+                    creditCardFields.style.display = 'none';
+                }
+            });
+        }
+
+        // Adicionar item ao carrinho
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            const existingItem = cart.find(i => i.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            
+            updateCartUI();
+            saveCartToStorage();
+            
+            // Feedback visual
+            const button = document.querySelector(`.add-to-cart[data-id="${itemId}"]`);
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Adicionado';
+            button.style.background = 'linear-gradient(135deg, var(--secondary), #70d6ce)';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+
+        // Atualizar UI do carrinho
+        function updateCartUI() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            let count = 0;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--gray);">Seu carrinho está vazio</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    count += item.quantity;
+                    
+                    const cartItemElement = document.createElement('div');
+                    cartItemElement.classList.add('cart-item');
+                    cartItemElement.innerHTML = `
+                        <div>
+                            <h4 class="cart-item-title">${item.name}</h4>
+                            <p class="cart-item-price">R$ ${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItemElement);
+                });
+            }
+            
+            cartTotal.textContent = `R$ ${total.toFixed(2)}`;
+            cartCount.textContent = count;
+            
+            // Adicionar event listeners aos botões de quantidade
+            document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    increaseQuantity(itemId);
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    decreaseQuantity(itemId);
+                });
+            });
+        }
+
+        // Aumentar quantidade do item
+        function increaseQuantity(itemId) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity += 1;
+                updateCartUI();
+                saveCartToStorage();
+            }
+        }
+
+        // Diminuir quantidade do item
+        function decreaseQuantity(itemId) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity -= 1;
+                if (item.quantity === 0) {
+                    cart = cart.filter(i => i.id !== itemId);
+                }
+                updateCartUI();
+                saveCartToStorage();
+            }
+        }
+
+        // Salvar carrinho no localStorage
+        function saveCartToStorage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Carregar carrinho do localStorage
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+        }
+
+        // Processar pedido (integração com backend)
+        function processOrder() {
+            // Esta função será implementada pela equipe de backend
+            // Coletar dados do formulário
+            const formData = {
+                customer: {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    address: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    neighborhood: document.getElementById('neighborhood').value
+                },
+                payment: {
+                    method: paymentMethod.value,
+                    // Outros dados de pagamento serão adicionados aqui pelo backend
+                },
+                items: cart,
+                total: calculateTotal()
+            };
+            
+            // Aqui será feita a chamada para a API do backend
+            console.log('Dados do pedido para enviar ao backend:', formData);
+            
+            // Simular processamento bem-sucedido
+            simulateOrderSuccess();
+        }
+
+        // Calcular total
+        function calculateTotal() {
+            return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        // Simular sucesso no pedido (será substituído pela integração real)
+        function simulateOrderSuccess() {
+            checkoutForm.style.display = 'none';
+            orderTracking.style.display = 'block';
+            
+            // Limpar carrinho
+            cart = [];
+            updateCartUI();
+            saveCartToStorage();
+            
+            // Simular atualização de status do pedido
+            // Na implementação real, isso virá do backend via WebSockets ou polling
+            simulateOrderProgress();
+        }
+
+        // Simular progresso do pedido (será substituído pela integração real)
+        function simulateOrderProgress() {
+            const statusElement = document.getElementById('order-status');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            const estimatedTime = document.getElementById('estimated-time');
+            
+            let currentStep = 1;
+            
+            const progressInterval = setInterval(() => {
+                progressSteps.forEach((step, index) => {
+                    if (index < currentStep) {
+                        step.classList.add('completed');
+                        step.classList.remove('active');
+                    } else if (index === currentStep) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active', 'completed');
+                    }
+                });
+                
+                switch(currentStep) {
+                    case 0:
+                        statusElement.textContent = 'Recebido';
+                        estimatedTime.textContent = '35-45 minutos';
+                        break;
+                    case 1:
+                        statusElement.textContent = 'Preparando';
+                        estimatedTime.textContent = '25-35 minutos';
+                        break;
+                    case 2:
+                        statusElement.textContent = 'Saiu para entrega';
+                        estimatedTime.textContent = '10-20 minutos';
+                        break;
+                    case 3:
+                        statusElement.textContent = 'Entregue';
+                        estimatedTime.textContent = '0 minutos';
+                        clearInterval(progressInterval);
+                        break;
+                }
+                
+                currentStep++;
+                if (currentStep > 3) clearInterval(progressInterval);
+            }, 5000);
+        }
+
+        // Inicializar a aplicação
+        init();
+    </script>
+</body>
+</html>
