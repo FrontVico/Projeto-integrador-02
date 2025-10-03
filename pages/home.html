@@ -92,6 +92,7 @@
                 <span id="cart-total">R$ 0,00</span>
             </div>
             
+            
             <button class="checkout-btn" id="proceed-to-checkout">
                 <i class="fas fa-credit-card"></i> Fazer Pedido
             </button>
@@ -143,65 +144,64 @@
                         <option value="pix">PIX</option>
                         <option value="cash">Dinheiro</option>
                     </select>
+                    <button class="checkout-btn" id="whatsapp-order-btn" style="margin-top: 16px;">
+                        <i class="fab fa-whatsapp"></i> Pedir pelo WhatsApp
+                    </button>
+                </div>
                 </div>
                 
-                <div id="credit-card-fields" style="display: none;">
-                    <div class="form-group">
-                        <label for="card-number">Número do Cartão</label>
-                        <input type="text" id="card-number" placeholder="0000 0000 0000 0000">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="card-expiry">Validade</label>
-                            <input type="text" id="card-expiry" placeholder="MM/AA">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="card-cvv">CVV</label>
-                            <input type="text" id="card-cvv" placeholder="000">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="card-name">Nome no Cartão</label>
-                        <input type="text" id="card-name">
-                    </div>
-                </div>
                 
-                <button type="submit" class="checkout-btn">
-                    <i class="fas fa-check-circle"></i> Finalizar Pedido
-                </button>
-            </form>
-            
-            <!-- Acompanhamento de Pedido (inicialmente oculto) -->
-            <div class="order-tracking" id="order-tracking">
-                <h3><i class="fas fa-map-marker-alt"></i> Acompanhamento do Pedido</h3>
-                <p class="order-status">Status: <span id="order-status">Preparando</span></p>
-                
-                <div class="progress-bar">
-                    <div class="progress-step completed">
-                        1
-                        <span class="step-label">Recebido</span>
-                    </div>
-                    <div class="progress-step active">
-                        2
-                        <span class="step-label">Preparando</span>
-                    </div>
-                    <div class="progress-step">
-                        3
-                        <span class="step-label">Saiu para entrega</span>
-                    </div>
-                    <div class="progress-step">
-                        4
-                        <span class="step-label">Entregue</span>
-                    </div>
-                </div>
-                
-                <p class="estimated-time">Tempo estimado: <span id="estimated-time">30-40 minutos</span></p>
-            </div>
-        </div>
-    </div>
+            </form>>
+            <script>
+                // Função para montar mensagem do pedido para WhatsApp
+                function buildWhatsAppMessage() {
+                    const name = document.getElementById('name').value;
+                    const address = document.getElementById('address').value;
+                    const city = document.getElementById('city').value;
+                    const neighborhood = document.getElementById('neighborhood').value;
+                    const payment = paymentMethod.value;
+                    let paymentText = '';
+                    switch (payment) {
+                        case 'credit': paymentText = 'Cartão de Crédito'; break;
+                        case 'debit': paymentText = 'Cartão de Débito'; break;
+                        case 'pix': paymentText = 'PIX'; break;
+                        case 'cash': paymentText = 'Dinheiro'; break;
+                        default: paymentText = '';
+                    }
+                    let itemsText = '';
+                    cart.forEach(item => {
+                        itemsText += `\n- ${item.name} (x${item.quantity})`;
+                    });
+                    const total = calculateTotal().toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    return `Olá! Gostaria de fazer um pedido:\n${itemsText}\n\nTotal: ${total}\n\nNome: ${name}\nEndereço: ${address}, ${neighborhood}, ${city}\nForma de pagamento: ${paymentText}`;
+                }
+
+                // Evento do botão WhatsApp
+                document.getElementById('whatsapp-order-btn').addEventListener('click', function () {
+                    // Validação simples dos campos obrigatórios
+                    const requiredFields = ['name', 'address', 'city', 'neighborhood', 'payment-method'];
+                    let valid = true;
+                    requiredFields.forEach(id => {
+                        if (!document.getElementById(id).value) valid = false;
+                    });
+                    if (cart.length === 0) valid = false;
+                    if (!valid) {
+                        alert('Por favor, preencha todos os campos obrigatórios e adicione itens ao carrinho.');
+                        return;
+                    }
+                    const phone = '+5515996621461'; // Número do WhatsApp do restaurante
+                    const message = encodeURIComponent(buildWhatsAppMessage());
+                    window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+                });
+
+                // Exibir botão WhatsApp apenas quando o formulário estiver visível
+                checkoutForm.addEventListener('show', () => {
+                    document.getElementById('whatsapp-order-btn').style.display = 'block';
+                });
+                checkoutForm.addEventListener('hide', () => {
+                    document.getElementById('whatsapp-order-btn').style.display = 'none';
+                });
+            </script>
 
     <!-- Footer -->
     <footer>
