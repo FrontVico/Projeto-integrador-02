@@ -1,13 +1,13 @@
 
         :root {
-            --primary: #ff6b6b;
-            --secondary: #4ecdc4;
-            --accent: #ffd166;
-            --dark: #2b2d42;
-            --light: #f8f9fa;
-            --gray: #8d99ae;
-            --light-gray: #edf2f4;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --primary: #722F37;
+            --secondary: #9C0F48;
+            --accent: #B91646;
+            --dark: #1E0A0E;
+            --light: #FDF6F8;
+            --gray: #8C7276;
+            --light-gray: #EBE3E4;
+            --shadow: 0 5px 15px rgba(114, 47, 55, 0.12);
             --transition: all 0.3s ease;
         }
         
@@ -125,7 +125,7 @@
             position: absolute;
             top: -8px;
             right: -8px;
-            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             border-radius: 50%;
             width: 20px;
@@ -167,14 +167,14 @@
         
         .btn {
             display: inline-block;
-            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             padding: 15px 35px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 5px 15px rgba(114, 47, 55, 0.3);
             border: none;
             cursor: pointer;
         }
@@ -244,7 +244,7 @@
         }
         
         .category-btn.active, .category-btn:hover {
-            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
         }
         
@@ -322,7 +322,7 @@
         .add-to-cart {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: white;
             border: none;
             border-radius: 8px;
@@ -336,7 +336,7 @@
         }
         
         .add-to-cart:hover {
-            background: linear-gradient(135deg, #ff5252, #ff7b7b);
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
         }
         
         /* Cart Modal moderna */
@@ -461,7 +461,7 @@
         .checkout-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, var(--secondary), #70d6ce);
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
             color: white;
             border: none;
             border-radius: 8px;
@@ -476,9 +476,9 @@
         }
         
         .checkout-btn:hover {
-            background: linear-gradient(135deg, #3dc4bb, #5fc9c2);
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+            box-shadow: 0 5px 15px rgba(156, 15, 72, 0.3);
         }
         
         /* Checkout Form moderna */
@@ -685,7 +685,7 @@
         }
         
         .social-icons a:hover {
-            background: linear-gradient(135deg, var(--primary), #ff8e8e);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             transform: translateY(-3px);
         }
         
