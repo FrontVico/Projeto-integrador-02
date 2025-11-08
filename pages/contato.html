@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contatos - Vida com tempero!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="../css/contato.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/contato.css">
 
 </head>
 <body>
@@ -168,6 +169,102 @@
     </section>
 
     
+    <!-- Cart Modal -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Seu Carrinho</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+
+            <div class="cart-items" id="cart-items">
+                <!-- Itens do carrinho serão adicionados dinamicamente -->
+            </div>
+
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">R$ 0,00</span>
+            </div>
+
+            <button class="checkout-btn" id="proceed-to-checkout">
+                <i class="fas fa-credit-card"></i> Fazer Pedido
+            </button>
+
+            <form id="checkout-form" style="display:none;">
+                <h3 class="form-title"><i class="fas fa-truck"></i> Informações de Entrega</h3>
+
+                <div class="form-group">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Endereço</label>
+                    <input type="text" id="address" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">Cidade</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="neighborhood">Bairro</label>
+                        <input type="text" id="neighborhood" required>
+                    </div>
+                </div>
+
+                <h3 class="form-title"><i class="fas fa-credit-card"></i> Forma de Pagamento</h3>
+
+                <div class="form-group">
+                    <label for="payment-method">Método de Pagamento</label>
+                    <select id="payment-method" required>
+                        <option value="">Selecione...</option>
+                        <option value="credit">Cartão de Crédito</option>
+                        <option value="debit">Cartão de Débito</option>
+                        <option value="pix">PIX</option>
+                        <option value="cash">Dinheiro</option>
+                    </select>
+                </div>
+
+                <div id="credit-card-fields" style="display:none;">
+                    <div class="form-group">
+                        <label for="card-number">Número do Cartão</label>
+                        <input type="text" id="card-number">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="card-exp">Validade</label>
+                            <input type="text" id="card-exp">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-cvc">CVC</label>
+                            <input type="text" id="card-cvc">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="checkout-btn" id="whatsapp-order-btn" style="margin-top: 16px;">
+                    <i class="fab fa-whatsapp"></i> Pedir pelo WhatsApp
+                </button>
+            </form>
+
+            <div id="order-tracking" style="display:none; margin-top:20px; text-align:center;">
+                <h3 id="order-status">Pedido em andamento</h3>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -239,6 +336,142 @@
                 contactForm.reset();
             });
         });
+    </script>
+
+    <script>
+    // Cart functionality (shared compact version)
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartIcon = document.getElementById('cart-icon');
+        const cartModal = document.getElementById('cart-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const cartItemsEl = document.getElementById('cart-items');
+        const cartTotalEl = document.getElementById('cart-total');
+        const cartCountEl = document.querySelector('.cart-count');
+        const proceedToCheckout = document.getElementById('proceed-to-checkout');
+        const checkoutForm = document.getElementById('checkout-form');
+        const paymentMethod = document.getElementById('payment-method');
+        const creditCardFields = document.getElementById('credit-card-fields');
+        const whatsappBtn = document.getElementById('whatsapp-order-btn');
+        const orderTracking = document.getElementById('order-tracking');
+
+        let cart = [];
+
+        function loadCartFromStorage(){
+            const saved = localStorage.getItem('cart');
+            if(saved) cart = JSON.parse(saved);
+        }
+
+        function saveCartToStorage(){
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartUI(){
+            if(!cartItemsEl) return;
+            cartItemsEl.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if(!cart || cart.length === 0){
+                cartItemsEl.innerHTML = '<p style="text-align:center;padding:20px;color:#8C7276">Seu carrinho está vazio</p>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    count += item.quantity;
+
+                    const div = document.createElement('div');
+                    div.className = 'cart-item';
+                    div.innerHTML = `
+                        <div>
+                            <h4 class="cart-item-title">${item.name}</h4>
+                            <p class="cart-item-price">R$ ${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn minus" data-id="${item.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn plus" data-id="${item.id}">+</button>
+                        </div>
+                    `;
+                    cartItemsEl.appendChild(div);
+                });
+            }
+
+            if(cartTotalEl) cartTotalEl.textContent = `R$ ${total.toFixed(2)}`;
+            if(cartCountEl) cartCountEl.textContent = count;
+
+            // attach handlers
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                increaseQuantity(id);
+            }));
+
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.getAttribute('data-id'));
+                decreaseQuantity(id);
+            }));
+        }
+
+        function increaseQuantity(id){
+            const it = cart.find(i => i.id === id);
+            if(it){ it.quantity += 1; updateCartUI(); saveCartToStorage(); }
+        }
+
+        function decreaseQuantity(id){
+            const it = cart.find(i => i.id === id);
+            if(it){ it.quantity -= 1; if(it.quantity <= 0) cart = cart.filter(i => i.id !== id); updateCartUI(); saveCartToStorage(); }
+        }
+
+        if(cartIcon) cartIcon.addEventListener('click', () => { if(cartModal) cartModal.style.display = 'flex'; });
+        if(closeModal) closeModal.addEventListener('click', () => { if(cartModal) cartModal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if(e.target === cartModal) cartModal.style.display = 'none'; });
+
+        if(proceedToCheckout) proceedToCheckout.addEventListener('click', () => {
+            document.querySelector('.cart-items').style.display = 'none';
+            document.querySelector('.cart-total').style.display = 'none';
+            proceedToCheckout.style.display = 'none';
+            if(checkoutForm) checkoutForm.style.display = 'block';
+        });
+
+        if(checkoutForm) checkoutForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            alert('Pedido enviado — agradecemos!');
+            // clear
+            cart = [];
+            updateCartUI();
+            saveCartToStorage();
+            checkoutForm.style.display = 'none';
+        });
+
+        if(paymentMethod) paymentMethod.addEventListener('change', () => {
+            if(paymentMethod.value === 'credit' || paymentMethod.value === 'debit') creditCardFields.style.display = 'block';
+            else creditCardFields.style.display = 'none';
+        });
+
+        function buildWhatsAppMessage(){
+            const name = document.getElementById('name') ? document.getElementById('name').value : '';
+            const address = document.getElementById('address') ? document.getElementById('address').value : '';
+            const city = document.getElementById('city') ? document.getElementById('city').value : '';
+            const neighborhood = document.getElementById('neighborhood') ? document.getElementById('neighborhood').value : '';
+            const payment = document.getElementById('payment-method') ? document.getElementById('payment-method').value : '';
+            let itemsText = '';
+            cart.forEach(item => { itemsText += `\n- ${item.name} (x${item.quantity})`; });
+            const total = cart.reduce((t,i) => t + i.price * i.quantity, 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            return `Olá! Gostaria de fazer um pedido:\n${itemsText}\n\nTotal: ${total}\n\nNome: ${name}\nEndereço: ${address}, ${neighborhood}, ${city}\nForma de pagamento: ${payment}`;
+        }
+
+        if(whatsappBtn) whatsappBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            const required = ['name','address','city','neighborhood','payment-method'];
+            for(const id of required){ const el = document.getElementById(id); if(!el || !el.value){ alert('Por favor preencha todos os campos obrigatórios.'); return; } }
+            if(!cart || cart.length === 0){ alert('Adicione itens ao carrinho antes de finalizar.'); return; }
+            const phone = '+5515999621461';
+            const message = encodeURIComponent(buildWhatsAppMessage());
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        });
+
+        // init
+        loadCartFromStorage();
+        updateCartUI();
+    });
     </script>
 </body>
 </html>
